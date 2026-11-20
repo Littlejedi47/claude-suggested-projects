@@ -8,8 +8,7 @@ class PasswordChecker:
     """Evaluate the length, strength and the chances of brute forcing a password."""
 
     def __init__(self):
-        self.password = gp.getpass("\n\nEnter a password to Evaluate: ")
-        
+        """Initializing variables."""
         self.lowercase = string.ascii_lowercase
         self.uppercase = string.ascii_uppercase
         self.symbol = string.punctuation
@@ -21,6 +20,16 @@ class PasswordChecker:
         self.is_symbol = False
         self.is_digits = False
         self.is_whitespace = False  # This condition should stay False.
+
+    def get_password_for_evaluation(self):
+        """ """
+        self.password = gp.getpass("\n\nEnter a password to Evaluate(q to quit): ")
+        
+        if self.password == 'q':
+            exit()
+        if self.password == "":
+            print("\nEmpty field, not acceptable!")
+            self.get_password_for_evaluation()
 
     def evaluate_password(self):
         """Evaluate if password has lowercase,uppercase,digit,symbol and white space."""
@@ -45,7 +54,7 @@ class PasswordChecker:
     def character_evaluation_response(self):
         """Clear screen and respond with evaluation."""
 
-        os.system('cls' if os.name == 'nt' else 'clear')
+        # os.system('cls' if os.name == 'nt' else 'clear')
 
         print(f"\nLength: {len(self.password)} characters.\n")
 
@@ -70,22 +79,18 @@ class PasswordChecker:
         elif not self.is_symbol:
             print("Symbol     (X)")
         # White space
-        if self.is_whitespace == True:
+        if self.is_whitespace:
             print("Can't have white space!")
-        elif self.is_whitespace == False:
-            print("White space (OK)")
         
             
     def run_programme(self):
         """Methods are executed in this block."""
-
-        while True:
-            
+        os.system('cls' if os.name == 'nt' else 'clear')
+        
+        while self.get_password_for_evaluation() != "q":
             self.evaluate_password()
             self.character_evaluation_response()
             
-
-            exit() # Without the exit function, The while loop would never stop.
 
 
 
