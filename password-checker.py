@@ -2,8 +2,6 @@ import getpass as gp
 import string
 import os
 
-
-
 class PasswordChecker:
     """Evaluate the length, strength and the chances of brute forcing a password."""
 
@@ -22,18 +20,18 @@ class PasswordChecker:
         self.is_whitespace = False  # This condition should stay False.
 
     def get_password_for_evaluation(self):
-        """ """
-        self.password = gp.getpass("\n\nEnter a password to Evaluate(q to quit): ")
-        
-        if self.password == 'q':
-            exit()
-        if self.password == "":
-            print("\nEmpty field, not acceptable!")
-            self.get_password_for_evaluation()
+        self.password = gp.getpass("Enter a password to Evaluate(q to quit): ")
 
-    def evaluate_password(self):
+    def reset_evaluation_values(self):
+        self.is_lowercase = False
+        self.is_uppercase = False
+        self.is_symbol = False
+        self.is_digits = False
+        self.is_whitespace = False
+
+    def password_evaluation(self):
         """Evaluate if password has lowercase,uppercase,digit,symbol and white space."""
-
+        self.reset_evaluation_values()
         for char in self.password:
             # Lowercase
             if char in self.lowercase:
@@ -50,12 +48,8 @@ class PasswordChecker:
             # White space
             if char in self.whitespace:
                 self.is_whitespace = True
-
-    def character_evaluation_response(self):
-        """Clear screen and respond with evaluation."""
-
-        # os.system('cls' if os.name == 'nt' else 'clear')
-
+    def password_evaluation_response(self):
+        # Respond with evaluation.
         print(f"\nLength: {len(self.password)} characters.\n")
 
         # Lowercase
@@ -70,9 +64,9 @@ class PasswordChecker:
             print("Uppercase  (X)")
         # Digit
         if self.is_digits:
-            print("Number     (OK)")
+            print("Digit      (OK)")
         elif not self.is_digits:
-            print("Number     (X)")
+            print("Digit      (X)")
         # Symbol
         if self.is_symbol:
             print("Symbol     (OK)")
@@ -81,20 +75,40 @@ class PasswordChecker:
         # White space
         if self.is_whitespace:
             print("Can't have white space!")
-        
-            
-    def run_programme(self):
+
+    def run_program(self):
         """Methods are executed in this block."""
         os.system('cls' if os.name == 'nt' else 'clear')
+        self.get_password_for_evaluation()
         
-        while self.get_password_for_evaluation() != "q":
-            self.evaluate_password()
-            self.character_evaluation_response()
+        while True:
+            # self.reset_evaluation_values()
+            if self.password.lower() == 'q':
+                print("\n------------ See you later. ------------")
+                break
+            elif self.password == '':
+                print("\nEmpty field, try again.")
+                print("-----------------------")
+                self.get_password_for_evaluation()
+                continue
+
+            self.password_evaluation()
+            self.password_evaluation_response()
             
+            if len(self.password) < 4:
+                print("\nPassword must have a minimum of 4 characters.\n")
+                self.get_password_for_evaluation()
+            elif len(self.password) > 64:
+                print("\nPassword must have a maximum of 64 characters.\n")
+                self.get_password_for_evaluation()
+            elif self.is_lowercase == True and self.is_uppercase == True and self.is_digits == True and self.is_symbol == True and self.is_whitespace == False:
+                break
+            elif self.is_lowercase == False or self.is_uppercase == False or self.is_digits == False or self.is_symbol == False or self.is_whitespace == True:
+                self.get_password_for_evaluation()
 
 
 
 
 if __name__ == '__main__':
     pc = PasswordChecker()
-    pc.run_programme()
+    pc.run_program()
