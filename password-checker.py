@@ -13,21 +13,21 @@ class PasswordChecker:
         self.digits = string.digits
         self.whitespace = string.whitespace
 
+        self.character_value_state()
+    def character_value_state(self):
+        """The True/False state of the presence of each character."""
         self.is_lowercase = False
         self.is_uppercase = False
         self.is_symbol = False
         self.is_digits = False
         self.is_whitespace = False  # This condition should stay False.
-
     def get_password_for_evaluation(self):
         self.password = gp.getpass("Enter a password to Evaluate(q to quit): ")
 
     def reset_evaluation_values(self):
-        self.is_lowercase = False
-        self.is_uppercase = False
-        self.is_symbol = False
-        self.is_digits = False
-        self.is_whitespace = False
+        """Reset the state of each variable for evaluation to False."""
+        # I kept the method for better readability and clear intentions.
+        self.character_value_state()
 
     def password_evaluation(self):
         """Evaluate if password has lowercase,uppercase,digit,symbol and white space."""
@@ -103,10 +103,8 @@ class PasswordChecker:
                 self.get_password_for_evaluation()
             elif self.is_lowercase == True and self.is_uppercase == True and self.is_digits == True and self.is_symbol == True and self.is_whitespace == False:
                 break
-            elif self.is_lowercase == False or self.is_uppercase == False or self.is_digits == False or self.is_symbol == False or self.is_whitespace == True:
+            else:
                 self.get_password_for_evaluation()
-
-
 
 
 if __name__ == '__main__':
