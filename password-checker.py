@@ -33,7 +33,6 @@ class PasswordChecker:
 
     def password_evaluation(self):
         """Evaluate if password has lowercase,uppercase,digit,symbol and white space."""
-        self.reset_evaluation_values_to_false()
         self.total_categories_present = 0
         for char in self.password:
             # Lowercase
@@ -51,16 +50,15 @@ class PasswordChecker:
             # White space
             if char in self.whitespace:
                 self.is_whitespace = True
-
-        for i in range(1):
-            if self.is_lowercase:
-                self.total_categories_present += 1
-            if self.is_uppercase:
-                self.total_categories_present += 1
-            if self.is_digits:
-                self.total_categories_present += 1
-            if self.is_symbol:
-                self.total_categories_present += 1
+        
+        if self.is_lowercase:
+            self.total_categories_present += 1
+        if self.is_uppercase:
+            self.total_categories_present += 1
+        if self.is_digits:
+            self.total_categories_present += 1
+        if self.is_symbol:
+            self.total_categories_present += 1
 
     def password_evaluation_response(self):
         # Respond with evaluation.
@@ -127,6 +125,11 @@ class PasswordChecker:
             if self.password.lower() == 'q':
                 print("\n------------ See you later. ------------")
                 break
+            elif self.password == len(' ') >= 1 and ' ' <= self.maximum_password_length:
+                print("\nEmpty field, try again.")
+                print("-----------------------")
+                self.get_password_for_evaluation()
+                
             elif self.password == '':
                 print("\nEmpty field, try again.")
                 print("-----------------------")
